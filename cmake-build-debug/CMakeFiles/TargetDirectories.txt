@@ -1,0 +1,9 @@
+/home/eugen/CLionProjects/ToDoTest/cmake-build-debug/CMakeFiles/ToDoTest.dir
+/home/eugen/CLionProjects/ToDoTest/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/eugen/CLionProjects/ToDoTest/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/eugen/CLionProjects/ToDoTest/cmake-build-debug/CMakeFiles/list_install_components.dir
+/home/eugen/CLionProjects/ToDoTest/cmake-build-debug/CMakeFiles/install.dir
+/home/eugen/CLionProjects/ToDoTest/cmake-build-debug/CMakeFiles/install/local.dir
+/home/eugen/CLionProjects/ToDoTest/cmake-build-debug/CMakeFiles/install/strip.dir
+/home/eugen/CLionProjects/ToDoTest/cmake-build-debug/CMakeFiles/ToDoTest_autogen_timestamp_deps.dir
+/home/eugen/CLionProjects/ToDoTest/cmake-build-debug/CMakeFiles/ToDoTest_autogen.dir
