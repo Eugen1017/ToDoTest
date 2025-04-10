@@ -43,3 +43,12 @@ std::string Task::toSQLInsert() const {
 
 	return query.str();
 }
+
+Task Task::fromSQLRow(char **row) {
+	int id = std::stoi(row[0]);
+	std::string title = row[1];
+	bool isCompleted = std::stoi(row[2]) != 0;
+	std::time_t dueDate = static_cast<std::time_t>(std::stoi(row[3]));
+
+	return Task(id, title, isCompleted, dueDate);
+}
