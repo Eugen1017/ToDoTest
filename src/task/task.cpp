@@ -20,3 +20,26 @@ std::time_t Task::getDueDate() const {
 	return dueDate;
 }
 
+void Task::setTitle(const std::string &newTitle) {
+	title = newTitle;
+}
+
+void Task::marksAsCompleted() {
+	isCompleted = true;
+}
+
+void Task::setDueDate(std::time_t newDueDate) {
+	dueDate = newDueDate;
+}
+
+std::string Task::toSQLInsert() const {
+	std::ostringstream query;
+
+	query << "INSERT INTO tasks (id, title, is_completed, due_date) VALUES ("
+			<< id << ", "
+		    << title << ", "
+		  	<< (isCompleted ? 1 : 0) << ", "
+			<< dueDate << ");";
+
+	return query.str();
+}
