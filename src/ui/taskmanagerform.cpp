@@ -1,4 +1,5 @@
 #include "taskmanagerform.h"
+#include "task.h"
 
 TaskManagerForm::TaskManagerForm(Database &db, Auth &auth, QWidget *parent)
 	: QWidget(parent), db(db), auth(auth) {
@@ -30,34 +31,38 @@ TaskManagerForm::~TaskManagerForm() {
 }
 
 void TaskManagerForm::addTask() {
-	QString task = taskEdit->text();
+	QString taskTitle = taskEdit->text();
 
-	if (task.isEmpty()) {
+	if (taskTitle.isEmpty()) {
 		QMessageBox::warning(this, "Add task failed", "Please, enter a task.");
 		return;
 	}
 
-	if (db.addTask(auth.getCurrentUser(), task.toStdString())) {
-		taskList->addItem(task);
+	Task newTask(0, taskTitle.toStdString());
+
+	if (db.execute(newTask.toSQLInsert())) {
+		taskList->addItem(taskTitle);
 		taskEdit->clear();
 	} else {
-		QMessageBox::warning(this, "Add task failde", "Failed to add taskt yo the datatbase");
+		QMessageBox::warning(this, "Add Task Failed", "Failed to add task to the database.");
 	}
 }
 
 void TaskManagerForm::removeTask() {
-	QListWidgetItem *item = taskList->currentItem();
+	QListWidgetItem *selectedItem = taskList->currentItem();
 
-	if (!item) {
-		QMessageBox::warning(this, "Remove task failed", "Please, select a task to remove.");
+	if (!selectedItem) {
+		QMessageBox::warning(this, "Remove Task Failed", "Please select a task to remove.");
+		return;
 	}
 
-	QString task = item->text();
+	QString taskTitle = selectedItem->text();
+	Task taskToRemove(0, taskTitle.toStdString());
 
-	if (db.removeTask(auth.getCurrentUser(), task.toStdString())) {
-		delete item;
+	if (db.execute(taskToRemove.toSQLDelete())) {
+		delete selectedItem;
 	} else {
-		QMessageBox::warning(this, "Remove task failde", "Failed to remove task from the database.");
+		QMessageBox::warning(this, "Remove Task Failed", "Failed to remove task from the database.");
 	}
 }
 

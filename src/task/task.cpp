@@ -44,6 +44,13 @@ std::string Task::toSQLInsert() const {
 	return query.str();
 }
 
+std::string Task::toSQLDelete() const {
+	std::ostringstream query;
+	query << "DELETE FROM tasks WHERE title = '" << title << "';";
+
+	return query.str();
+}
+
 Task Task::fromSQLRow(char **row) {
 	int id = std::stoi(row[0]);
 	std::string title = row[1];

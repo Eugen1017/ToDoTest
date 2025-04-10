@@ -24,6 +24,7 @@ public:
 	void setDueDate(std::time_t newDueDate);
 
 	std::string toSQLInsert() const;
+	std::string toSQLDelete() const;
 	static Task fromSQLRow(char **row);
 };
 
