@@ -1,10 +1,12 @@
 #include <QApplication>
 #include <QPushButton>
 #include <QWidget>
+#include <QVBoxLayout>
 #include "database.h"
 #include "auth.h"
 #include "loginform.h"
 #include "registrationform.h"
+#include "taskmanagerform.h" // Додано для роботи з TaskManagerForm
 
 int main(int argc, char *argv[]) {
 	QApplication app(argc, argv);
@@ -28,12 +30,21 @@ int main(int argc, char *argv[]) {
 	LoginForm loginForm(auth);
 	loginForm.setWindowTitle("User Login");
 
-	QObject::connect(&registerButton, &QPushButton::clicked, [&](){
+	TaskManagerForm taskManagerForm(db, auth); // Додано TaskManagerForm
+	taskManagerForm.setWindowTitle("Task Manager");
+
+	QObject::connect(&registerButton, &QPushButton::clicked, [&]() {
 		registrationForm.show();
 	});
 
-	QObject::connect(&loginButton, &QPushButton::clicked, [&](){
+	QObject::connect(&loginButton, &QPushButton::clicked, [&]() {
 		loginForm.show();
+	});
+
+	// Переход до Task Manager після успішного входу
+	QObject::connect(&loginForm, &LoginForm::loginSuccessful, [&]() {
+		loginForm.hide();
+		taskManagerForm.show();
 	});
 
 	mainWidget.setWindowTitle("Task Manager");

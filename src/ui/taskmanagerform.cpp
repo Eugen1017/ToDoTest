@@ -1,5 +1,6 @@
 #include "taskmanagerform.h"
 #include "task.h"
+#include "tasklist.h"
 
 TaskManagerForm::TaskManagerForm(Database &db, Auth &auth, QWidget *parent)
 	: QWidget(parent), db(db), auth(auth) {
@@ -67,11 +68,18 @@ void TaskManagerForm::removeTask() {
 }
 
 void TaskManagerForm::loadTasks() {
-	taslList->clear();
+	taskList->clear();
 
-	std::vector<std::string> tasks = db.getTasks(auth.getCurrentUser());
+	// Використовуємо TaskList для завантаження завдань
+	TaskList taskListObj(db);
 
-	for (const auto &task : tasks) {
-		taskList->addItem(QString::fromStdString(task));
+	try {
+		std::vector<Task> tasks = taskListObj.getTasks(auth.getCurrentUser());
+
+		for (const auto &task : tasks) {
+			taskList->addItem(QString::fromStdString(task.getTitle()));
+		}
+	} catch (const std::exception &e) {
+		QMessageBox::warning(this, "Error Loading Tasks", QString("An error occurred while loading tasks: %1").arg(e.what()));
 	}
 }

@@ -37,8 +37,8 @@ bool Auth::loginUser(const std::string &username, const std::string &password) {
 	return useer_found;
 }
 
-std::string Auth::getCurrentUser() const {
-	return currentUser;
+int Auth::getCurrentUser() const {
+	return currentUserId;
 }
 
 

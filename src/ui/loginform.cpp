@@ -1,47 +1,36 @@
 #include "loginform.h"
 #include <QVBoxLayout>
-#include <QLabel>
+#include <QMessageBox>
 
-LoginForm::LoginForm(Auth &auth, QWidget *parent) : QWidget(parent), auth(auth) {
-	QVBoxLayout *layout = new QVBoxLayout(this);
+LoginForm::LoginForm(Auth& auth, QWidget *parent)
+	: QWidget(parent), m_auth(auth) {
+	QVBoxLayout* layout = new QVBoxLayout(this);
 
-	QLabel *usernameLabel = new QLabel("Username:", this);
-	usernameEdit = new QLineEdit(this);
+	m_usernameField = new QLineEdit(this);
+	m_usernameField->setPlaceholderText("Username");
 
-	QLabel *passwordLabel = new QLabel("Password:", this);
-	passwordEdit = new QLineEdit(this);
-	passwordEdit->setEchoMode(QLineEdit::Password);
+	m_passwordField = new QLineEdit(this);
+	m_passwordField->setPlaceholderText("Password");
+	m_passwordField->setEchoMode(QLineEdit::Password);
 
-	loginButton = new QPushButton("login", this);
+	m_loginButton = new QPushButton("Login", this);
 
-	connect(loginButton, &QPushButton::clicked, this, &LoginForm::handleLogin);
+	layout->addWidget(m_usernameField);
+	layout->addWidget(m_passwordField);
+	layout->addWidget(m_loginButton);
 
-	layout->addWidget(usernameLabel);
-	layout->addWidget(usernameEdit);
-	layout->addWidget(passwordLabel);
-	layout->addWidget(passwordEdit);
-	layout->addWidget(loginButton);
-
-	setLayout(layout);
-}
-
-LoginForm::~LoginForm() {
-	//It can be empty, but if needed, it can contain code to clean up resources.
+	connect(m_loginButton, &QPushButton::clicked, this, &LoginForm::handleLogin);
 }
 
 void LoginForm::handleLogin() {
-	QString username = usernameEdit->text();
-	QString password = passwordEdit->text();
+	QString username = m_usernameField->text();
+	QString password = m_passwordField->text();
 
-	if (username.isEmpty() || password.isEmpty()) {
-		QMessageBox::warning(this, "Login failde", "Please, fill in all fields");
-		return;
-	}
-
-	if (auth.loginUser(username.toStdString(), password.toStdString())) {
-		QMessageBox::warning(this, "Login Success", "Login successful.");
+	if (m_auth.loginUser(username.toStdString(), password.toStdString())) {
+		QMessageBox::information(this, "Login", "Login successful!");
+		emit loginSuccessful(); // Відправляємо сигнал успішного входу
+		this->close();
 	} else {
-		QMessageBox::warning(this, "Login Failed", "Login failed. Incorrect username or password.");
+		QMessageBox::warning(this, "Login", "Invalid username or password!");
 	}
-
 }

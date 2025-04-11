@@ -4,26 +4,25 @@
 #include <QWidget>
 #include <QLineEdit>
 #include <QPushButton>
-#include <QFormLayout>
-#include <QMessageBox>
 #include "auth.h"
-
 
 class LoginForm : public QWidget {
 	Q_OBJECT
 
 public:
-	LoginForm(Auth &auth, QWidget *parent = nullptr);
-	~LoginForm();
+	explicit LoginForm(Auth& auth, QWidget *parent = nullptr);
 
-private slots:
-	void handleLogin();
+	signals:
+		void loginSuccessful(); // Сигнал для успішного входу
+
+	private slots:
+		void handleLogin();
 
 private:
-	Auth &auth;
-	QLineEdit *usernameEdit;
-	QLineEdit *passwordEdit;
-	QPushButton *loginButton;
+	Auth& m_auth;
+	QLineEdit* m_usernameField;
+	QLineEdit* m_passwordField;
+	QPushButton* m_loginButton;
 };
 
-#endif
+#endif // LOGINFORM_H
